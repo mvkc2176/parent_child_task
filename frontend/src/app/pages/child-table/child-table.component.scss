@@ -1,0 +1,16 @@
+.child-table-main {
+    background-color: #eee;
+    min-height: calc(100vh - 90px);
+
+    .endpos {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 5rem;
+    }
+
+    .norecord {
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+    }
+}

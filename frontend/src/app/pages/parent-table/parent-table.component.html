@@ -1,0 +1,31 @@
+<div class="parent-table-main">
+    <br />
+    <br />
+    <div class="container">
+        <ng-container *subscribe="this.parentData$ as parentData">
+            <!-- Parent data subscription -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Sender</th>
+                        <th class="text-center">Receiver</th>
+                        <th class="text-center">TotalAmount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through parentData array and display table rows -->
+                    <tr *ngFor="let parentInfo of parentData.data; index as i">
+                        <td class="text-center">{{i + 1}}</td>
+                        <!-- Display the sender -->
+                        <td class="text-center">{{parentInfo.sender}}</td>
+                        <!-- Display the receiver -->
+                        <td class="text-center">{{parentInfo.receiver}}</td>
+                        <!-- Display the total amount with a link to child details -->
+                        <td class="text-center"><a routerLink="/child/{{i+1}}">{{parentInfo.totalAmount}}</a> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+    </div>
+</div>
