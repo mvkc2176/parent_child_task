@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { UseQuery } from '@ngneat/query';
 import { HttpClient } from '@angular/common/http';
 
-const API_ENDPOINT = "http://10.10.14.15:8080/api";
+const API_ENDPOINT = "http://localhost:8080/api";
 
 interface IParentData {
   sender: string;
@@ -23,11 +23,21 @@ export class ParentService {
   constructor() { }
 
   getParentData() {
-    // Using the 'UseQuery' hook to cache and manage the data retrieval
-    return this.useQuery(['getParentData'], () => {
+    let page_num: number = 0 ;
+
+    const queryKey = ['getParentData', page_num];
+
+    const query = this.useQuery(queryKey, () => {
       return this.http.get<IParentData[]>(
-        `${API_ENDPOINT}/parents`
+        `${API_ENDPOINT}/parents/${page_num}`
       );
     }) as any;
+
+    const invalidateQuery = (pageNum: number) => {
+      page_num = pageNum;
+      query.refetch();
+    };
+
+    return { query, invalidateQuery };
   }
 }

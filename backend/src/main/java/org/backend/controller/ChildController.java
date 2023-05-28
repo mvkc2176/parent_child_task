@@ -3,11 +3,14 @@ package org.backend.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.backend.controller.dto.child.GetChildrenPaginationRequest;
 import org.backend.model.Child;
 import org.backend.service.ChildService;
 import org.springframework.web.bind.annotation.*;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,15 +34,14 @@ public class ChildController {
 		return children.stream().collect(Collectors.toList());
 	}
 
-	@GetMapping("/{id}")
-	public List<Child> getChildrenByParentId(@PathVariable String id) {
-		// Convert the ID from string to a Long value
-		Long parent_id = Long.valueOf(id);
+	@PostMapping("/{page_num}")
+	public ResponseEntity<?> getChildrenByParentId(@PathVariable String page_num, @RequestBody GetChildrenPaginationRequest childrenPaginationRequest ) throws JSONException {
+		Long parentId = childrenPaginationRequest.getParentId();
+		int pageNum = Integer.valueOf(page_num);
 		
 		// Retrieve a list of children by parent ID from the childService
-		List<Child> children = childService.getChildrenByParentId(parent_id);
-		
-		// Convert the list to a stream and collect it back into a list
-        return children.stream().collect(Collectors.toList());
+		JSONObject jsonObject = childService.getChildrenByParentId(parentId, pageNum);
+
+		return ResponseEntity.ok(jsonObject.toString());
     }
 }

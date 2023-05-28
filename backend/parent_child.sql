@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2023 at 11:57 PM
+-- Generation Time: May 28, 2023 at 06:27 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `children` (
 
 INSERT INTO `children` (`id`, `parent_id`, `paid_amount`, `created_at`) VALUES
 (1, 1, 10, '2023-05-25 12:28:23'),
-(2, 2, 50, '2023-05-25 12:28:23'),
+(2, 2, 123, '2023-05-25 12:28:23'),
 (3, 1, 40, '2023-05-25 12:28:23'),
 (4, 2, 100, '2023-05-25 12:28:23'),
 (5, 3, 10, '2023-05-25 12:28:23'),
@@ -65,7 +65,7 @@ CREATE TABLE `parents` (
   `sender` varchar(255) NOT NULL,
   `receiver` varchar(255) NOT NULL,
   `created_at` varchar(255) DEFAULT NULL,
-  `total_amount` float DEFAULT NULL
+  `total_amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

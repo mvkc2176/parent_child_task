@@ -3,8 +3,9 @@ package org.backend.repository;
 import org.backend.model.Parent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, String> {
@@ -13,5 +14,5 @@ public interface ParentRepository extends JpaRepository<Parent, String> {
     Parent findById(Long id);
 
     // Find all parents and order them by the creation date in descending order
-    List<Parent> findAllByOrderByCreatedAtDesc();
+    Page<Parent> findAll(Pageable pageable);
 }

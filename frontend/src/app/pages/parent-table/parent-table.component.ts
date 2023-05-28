@@ -7,8 +7,26 @@ import { ParentService } from 'src/app/services/parent/parent.service';
   styleUrls: ['./parent-table.component.scss']
 })
 export class ParentTableComponent {
-
+  page_num: number = 0;
+  
   // Declare parentData$ as a variable to store the result of the parent data
-  parentData$ = inject(ParentService).getParentData().result$;
+  getParentData = inject(ParentService).getParentData();
 
+  goToNextPage(total_num: number) {
+    if(this.page_num == total_num - 1) {
+      return
+    }
+
+    this.page_num += 1;
+    this.getParentData.invalidateQuery(this.page_num);
+  }
+
+  goToPreviousPage() {
+    if(this.page_num == 0) {
+      return
+    }
+
+    this.page_num -= 1;
+    this.getParentData.invalidateQuery(this.page_num);
+  }
 }

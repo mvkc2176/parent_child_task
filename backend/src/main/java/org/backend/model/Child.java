@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.ZonedDateTime;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 @Data
 @NoArgsConstructor
@@ -69,4 +71,14 @@ public class Child {
 	public Parent getParent() {
         return parent;
     }
+	
+	public JSONObject toJsonChild() throws JSONException {
+		JSONObject jsonObject = new JSONObject();
+		
+		jsonObject.put("paid_amount", this.getPaidAmount());
+		jsonObject.put("created_at", this.getCreatedAt());
+		jsonObject.put("parent", this.parent.toJsonParent());
+		
+		return jsonObject;
+	}
 }

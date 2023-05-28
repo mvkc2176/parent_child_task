@@ -3,9 +3,9 @@
     <br />
     <div class="container">
         <!-- Subscribe to childData$ and assign it to childData -->
-        <ng-container *subscribe="this.childData$ as childData">
+        <ng-container *subscribe="this.getChildrenData.query?.result$ as childData">
             <!-- Display table if childData has data -->
-            <table class="table table-striped" *ngIf="childData.data?.length">
+            <table class="table table-striped" *ngIf="childData.data?.children?.length">
                 <thead>
                     <tr>
                         <th class="text-center">Id</th>
@@ -17,28 +17,32 @@
                 </thead>
                 <tbody>
                     <!-- Iterate over childData.data and assign each item to childInfo -->
-                    <tr *ngFor="let childInfo of childData.data; index as i">
+                    <tr *ngFor="let childInfo of childData?.data?.children; index as i">
                         <!-- Display the index of the item + 1 -->
                         <td class="text-center">{{i + 1}}</td>
                         <!-- Display the sender from childInfo.parent -->
                         <td class="text-center">{{childInfo.parent.sender}}</td>
                         <!-- Display the receiver from childInfo.parent -->
                         <td class="text-center">{{childInfo.parent.receiver}}</td>
-                        <!-- Display the total amount from childInfo.parent -->
+                        <!-- Display the totalAmount from childInfo.parent -->
                         <td class="text-center">{{childInfo.parent.totalAmount}}</td>
                         <!-- Display the paid amount from childInfo -->
-                        <td class="text-center">{{childInfo.paidAmount}}</td>
+                        <td class="text-center">{{childInfo.paid_amount}}</td>
                     </tr>
                 </tbody>
             </table>
             <!-- Display "No Record" message if childData has no data -->
-            <div *ngIf="!childData.data?.length" class="norecord">
+            <div *ngIf="!childData.data?.children?.length" class="norecord">
                 <p>No Record</p>
             </div>
+
+            <!-- <div class="button-group">
+                <button mat-raised-button color="accent" disabled="{{!this.page_num}}">Previous</button>
+                <button mat-raised-button  color="accent" (click)="goToNextPage(childData?.data?.total_page)" disabled="{{this.page_num == childData?.data?.total_page - 1 || !childData?.data?.total_page}}">Next</button>
+            </div> -->
+            <div class="endpos">
+                <button mat-raised-button color="primary" routerLink="/parent">Back</button>
+            </div>
         </ng-container>
-        <div class="endpos">
-            <!-- Button to navigate back to the "/parent" route -->
-            <button type="button" class="btn btn-outline-primary btn-lg" routerLink="/parent">Back</button>
-        </div>
     </div>
 </div>

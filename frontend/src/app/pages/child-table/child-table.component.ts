@@ -9,10 +9,31 @@ import { ChildService } from 'src/app/services/child/child.service';
 })
 export class ChildTableComponent {
   // Extracting the 'id' parameter from the current route snapshot
-  id: string = this.route.snapshot.params['id'];
+  parentId: string = this.route.snapshot.params['id'];
+  page_num: number = 0;
 
   // Retrieving child data using ChildService and assigning it to 'childData$' property
-  childData$ = inject(ChildService).getChildData(parseInt(this.id)).result$;
+  getChildrenData = inject(ChildService).getChildData(parseInt(this.parentId));
 
-  constructor(private route: ActivatedRoute) {}
-}
+  constructor(private route: ActivatedRoute) {
+
+  }
+
+  goToNextPage(total_num: number) {
+    if(this.page_num == total_num - 1) {
+      return
+    }
+
+    this.page_num += 1;
+    this.getChildrenData.invalidateQuery(this.page_num);
+  }
+
+  goToPreviousPage() {
+    if(!this.page_num) {
+      return
+    }
+
+    this.page_num -= 1;
+    this.getChildrenData.invalidateQuery(this.page_num);
+  }
+} 

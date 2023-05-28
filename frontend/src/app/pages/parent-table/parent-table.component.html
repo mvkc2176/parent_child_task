@@ -2,7 +2,7 @@
     <br />
     <br />
     <div class="container">
-        <ng-container *subscribe="this.parentData$ as parentData">
+        <ng-container *subscribe="this.getParentData.query.result$ as parentData">
             <!-- Parent data subscription -->
             <table class="table table-striped">
                 <thead>
@@ -10,22 +10,29 @@
                         <th class="text-center">Id</th>
                         <th class="text-center">Sender</th>
                         <th class="text-center">Receiver</th>
-                        <th class="text-center">TotalAmount</th>
+                        <th class="text-center">Total Amount</th>
+                        <th class="text-center">Total Paid Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Loop through parentData array and display table rows -->
-                    <tr *ngFor="let parentInfo of parentData.data; index as i">
-                        <td class="text-center">{{i + 1}}</td>
+                    <tr *ngFor="let parentInfo of parentData?.data?.parents; index as i">
+                        <td class="text-center">{{2 * this.page_num + i + 1}}</td>
                         <!-- Display the sender -->
                         <td class="text-center">{{parentInfo.sender}}</td>
                         <!-- Display the receiver -->
                         <td class="text-center">{{parentInfo.receiver}}</td>
+                        <!-- Display the total amount -->
+                        <td class="text-center">{{parentInfo.totalAmount}}</td>
                         <!-- Display the total amount with a link to child details -->
-                        <td class="text-center"><a routerLink="/child/{{i+1}}">{{parentInfo.totalAmount}}</a> </td>
+                        <td class="text-center"><a routerLink="/child/{{2 * this.page_num + i + 1}}">{{parentInfo.total_paid_amount || 0}}</a> </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="button-group">
+                <button mat-raised-button color="accent" (click)="goToPreviousPage()" disabled="{{!this.page_num}}">Previous</button>
+                <button mat-raised-button color="accent" (click)="goToNextPage(parentData.data?.total_num)" disabled="{{this.page_num == parentData?.data?.total_num - 1}}">Next</button>
+            </div>
         </ng-container>
     </div>
 </div>

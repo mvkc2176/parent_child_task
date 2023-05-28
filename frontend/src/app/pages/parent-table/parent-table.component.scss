@@ -1,4 +1,11 @@
 .parent-table-main {
     background-color: #eee;
     min-height: calc(100vh - 90px);
+
+    .button-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        width: 100%;
+    }
 }

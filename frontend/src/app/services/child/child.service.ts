@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { UseQuery } from '@ngneat/query';
 import { HttpClient } from '@angular/common/http';
 
-const API_ENDPOINT = "http://10.10.14.15:8080/api" ;
+const API_ENDPOINT = "http://localhost:8080/api" ;
 
 interface IChildData {
   paidAmount: number;
@@ -21,11 +21,25 @@ export class ChildService {
   constructor() { }
 
   // Retrieves child data for a given ID
-  getChildData(id: number) {
-    return this.useQuery(['getChildData'], () => {
-      return this.http.get<IChildData[]>(
-        `${API_ENDPOINT}/children/${id}`
+  getChildData(parentId: number) {
+    let page_num: number = 0;
+
+    const queryKey = ['getChildData', page_num];
+
+    const query =  this.useQuery(queryKey, () => {
+      return this.http.post<IChildData[]>(
+        `${API_ENDPOINT}/children/${page_num}`,
+        {
+          parentId
+        }
       );
     }) as any;
+
+    const invalidateQuery = (pageNum: number) => {
+      page_num = pageNum;
+      query.refetch();
+    }
+    
+    return { query, invalidateQuery }
   }
 }

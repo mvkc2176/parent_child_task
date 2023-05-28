@@ -1,15 +1,13 @@
 package org.backend.controller;
 
-import org.backend.model.Parent;
 import org.backend.service.ParentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-//import jara.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -22,13 +20,14 @@ public class ParentController {
 		this.parentService = parentService;
 	}
 
+	@GetMapping("/{pageNum}")
+	public ResponseEntity<?> getParents(@PathVariable String pageNum) throws JSONException {
+		int page_num = Integer.valueOf(pageNum);
 
-	@GetMapping
-	public List<Parent> getBlogs() {
 		// Get parents from the parent service
-		List<Parent> parents = parentService.getParents();
+		JSONObject jsonObject = parentService.getParents(page_num);
 		
 		// Convert the list of parents to a stream and collect them back into a list
-		return parents.stream().collect(Collectors.toList());
+		return ResponseEntity.ok(jsonObject.toString());
 	}
 }

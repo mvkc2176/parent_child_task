@@ -1,9 +1,9 @@
 package org.backend.service;
 
-import java.util.List;
-import org.backend.model.Parent;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 public interface ParentService {
     // Retrieves a list of parents
-    List<Parent> getParents();
+    JSONObject getParents(int page_num) throws JSONException;
 }

@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 @RequiredArgsConstructor
 @Service
 public class ChildServiceImpl implements ChildService {
@@ -28,14 +35,33 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public List<Child> getChildrenByParentId(Long parent_id) {
-        List<Child> children = childRepository.findChildrenByParentId(parent_id); // Retrieve children entities by parent ID
-        Parent parent = parentRepository.findById(parent_id); // Retrieve the parent entity by ID
+    public JSONObject getChildrenByParentId(Long parent_id, int page_num) throws JSONException {
+    	try {
+    		Pageable pageable = PageRequest.of(page_num, 10, Sort.by("id").ascending());
+        	
+        	int total_page = childRepository.findChildrenByParentId(parent_id, pageable).getTotalPages();
+        	
+        	JSONArray childrenArray = new JSONArray();
+            List<Child> children = childRepository.findChildrenByParentId(parent_id, pageable).getContent(); // Retrieve children entities by parent ID
+            
+            Parent parent = parentRepository.findById(parent_id); // Retrieve the parent entity by ID
+            
+            for (Child child : children) {
+                child.setParent(parent); // Set the parent for each child entity
+                
+                childrenArray.put(child.toJsonChild());
+            }
+           
+            JSONObject jsonObject = new JSONObject();
 
-        for (Child child : children) {
-            child.setParent(parent); // Set the parent for each child entity
-        }
-
-        return children; // Return the list of children entities with their respective parent
+            jsonObject.put("children", childrenArray);
+            jsonObject.put("total_page", total_page);
+            
+            return jsonObject; // Return the list of children entities with their respective parent
+    	} catch(JSONException e) {
+            e.printStackTrace(); // Print the stack trace for debugging purposes
+            throw new JSONException("An error occurred while retrieving children by parent ID: " + e.getMessage());
+    	}
+    	
     }
 }

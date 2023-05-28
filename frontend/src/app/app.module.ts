@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ParentTableComponent } from './pages/parent-table/parent-table.component';
 
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+
 import { SubscribeDirective } from '@ngneat/subscribe';
 import { HttpClientModule } from '@angular/common/http';
 import { ChildTableComponent } from './pages/child-table/child-table.component';
@@ -27,7 +29,8 @@ import { ChildTableComponent } from './pages/child-table/child-table.component';
     BrowserAnimationsModule,
 
     MatTableModule,
-
+    MatButtonModule,
+    
     SubscribeDirective,
     HttpClientModule,
   ],
